@@ -1,5 +1,7 @@
 package com.proartz;
 
+import com.sun.jdi.Value;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -36,6 +38,16 @@ public class StockList {
         return 0;
     }
 
+
+    public int unreserveStock(String item, int quantity) {
+        StockItem inStock = list.getOrDefault(item, null);
+        if((inStock != null) && (inStock.getReserved() >= quantity) && (quantity > 0)) {
+            inStock.adjustReserve((-1) * quantity);
+            return quantity;
+        }
+        return 0;
+    }
+
     public StockItem get(String key) {
         return list.get(key);
     }
@@ -61,7 +73,7 @@ public class StockList {
 
             double itemValue = stockItem.getPrice() * stockItem.availableInStock();
 
-            s = s + stockItem + ". There are " + stockItem.availableInStock() + " in stock. Value of items: ";
+            s = s + stockItem + ". There are " + stockItem.availableInStock() + " in stock. " + stockItem.getReserved() + " reserved. Value of items: ";
             s = s + String.format("%.2f", itemValue) + "\n";
             totalCost += itemValue;
         }

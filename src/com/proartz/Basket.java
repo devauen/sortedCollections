@@ -22,6 +22,17 @@ public class Basket {
         return 0;
     }
 
+    public int removeFromBasket(StockItem item) {
+        if(item != null){
+            int quantity = list.getOrDefault(item, 0);
+            if(quantity != 0){
+                list.remove(item);
+                return quantity;
+            }
+        }
+        return 0;
+    }
+
     public Map<StockItem, Integer> Items() {
         return Collections.unmodifiableMap(list);
     }
@@ -35,5 +46,9 @@ public class Basket {
             totalCost += item.getKey().getPrice() * item.getValue();
         }
         return s + "Total cost " + totalCost;
+    }
+
+    public void empty() {
+        list.clear();
     }
 }
